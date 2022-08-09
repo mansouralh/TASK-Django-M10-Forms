@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from stores import models
@@ -46,3 +46,15 @@ def update_store_item (request,item_id):
         "form": form,
     }
     return render (request,"update_store_item.html",context)
+
+
+
+def delete_store_item (request,item_id):
+    try:
+        store_item = models.StoreItem.objects.get(id=item_id)
+    except:
+        Http404
+    store_item.delete()
+    
+    return redirect("store-item-list")
+            
